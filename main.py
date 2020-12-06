@@ -4,7 +4,7 @@ import json
 
 
 def get_page_html(num):
-    url = "https://bandcamp.com/artist_index?page={num}"
+    url = f"https://bandcamp.com/artist_index?page={num}"
     html = requests.get(url).text
     return html
 
@@ -15,19 +15,23 @@ def get_artist_info(html):
     return [[n.get_text().strip(), n.find('a').get('href')] for n in names]
 
 
-def get_artist_names(html):
+def get_artist_links(html):
     soup = BeautifulSoup(html, 'html.parser')
     names = soup.find_all(class_="item")
     return [n.find('a').get('href') for n in names]
 
 
-def paginate(start_page, end_page):
-    return [get_artist_names(get_page_html(page)) for page in list(range(start_page, end_page))]
+def get_bands_on_page(page_number):
+    return get_artist_links(get_page_html(page_number))
+
+
+def write_file():
+    for i in range(1, 3444):  # todo last page changes as more bands added
+        with open(f"results-{i}.txt", "w") as f:
+            bands = get_bands_on_page(i)
+            # print(bands)
+            f.write("\n".join(bands))
 
 
 if __name__ == "__main__":
-    p = paginate(1, 3436)  # todo last page changes as more bands added
-    flat = [name for page in p for name in page]
-    # print("\n".join(flat))
-    with open(f"results.txt", "a") as f:
-        f.write("\n".join(flat))
+    write_file()
