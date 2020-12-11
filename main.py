@@ -26,7 +26,7 @@ def get_bands_on_page(page_number):
 
 
 def write_file():
-    for i in range(1, 3444):  # todo last page changes as more bands added
+    for i in range(1, 3449):  # todo last page changes as more bands added
         with open(f"results-{i}.txt", "w") as f:
             bands = get_bands_on_page(i)
             # print(bands)
