@@ -33,5 +33,15 @@ def write_file():
             f.write("\n".join(bands))
 
 
+def write_json():
+    with open("results.txt") as fin:
+        dicty = {"bands": []}
+        for line in fin.readlines():
+            dicty["bands"].append(line.strip())
+    with open("results.json", "w") as fout:
+        json.dump(dicty, fout)
+
+
 if __name__ == "__main__":
     write_file()
+    # write_json()
